@@ -1,0 +1,194 @@
+/* ============================================================================
+   RESPONSIVE BREAKPOINTS - BEMIT IT SUFFIXES
+   Mobile-First Approach
+   ============================================================================
+   
+   Breakpoints:
+   (none)  - Mobile: 0px - 480px
+   @sm     - Tablet: 481px - 768px
+   @md     - Desktop: 769px - 1024px
+   @lg     - Large Desktop: 1025px+
+   
+   ========================================================================= */
+
+/* ============================================================================
+   TABLET BREAKPOINT (@sm) - 481px+
+   ========================================================================= */
+
+@media (min-width: 481px) {
+  /* Increase base font size slightly for better readability */
+  html@sm {
+    font-size: 17px;
+  }
+
+  /* Typography scaling */
+  h1@sm {
+    font-size: clamp(1.75rem, 5vw, 2.25rem);
+  }
+
+  h2@sm {
+    font-size: clamp(1.4rem, 4vw, 1.75rem);
+  }
+
+  h3@sm {
+    font-size: clamp(1.2rem, 3vw, 1.4rem);
+  }
+
+  /* Spacing adjustments */
+  body@sm {
+    line-height: 1.7;
+  }
+
+  /* Form elements get more breathing room */
+  input@sm,
+  textarea@sm,
+  select@sm,
+  button@sm {
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* ============================================================================
+   DESKTOP BREAKPOINT (@md) - 769px+
+   ========================================================================= */
+
+@media (min-width: 769px) {
+  /* Return to standard font size */
+  html@md {
+    font-size: 16px;
+  }
+
+  h1@md {
+    font-size: 2.5rem;
+  }
+
+  h2@md {
+    font-size: 2rem;
+  }
+
+  h3@md {
+    font-size: 1.5rem;
+  }
+
+  /* Increase vertical spacing */
+  body@md {
+    line-height: 1.8;
+  }
+
+  /* Generous padding on desktop */
+  input@md,
+  textarea@md,
+  select@md,
+  button@md {
+    padding: 0.875rem 1.25rem;
+    font-size: 1rem;
+  }
+
+  /* Better spacing between elements */
+  p@md {
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* ============================================================================
+   LARGE DESKTOP BREAKPOINT (@lg) - 1025px+
+   ========================================================================= */
+
+@media (min-width: 1025px) {
+  h1@lg {
+    font-size: 3rem;
+  }
+
+  h2@lg {
+    font-size: 2.25rem;
+  }
+
+  h3@lg {
+    font-size: 1.75rem;
+  }
+
+  /* Extra padding on large screens */
+  input@lg,
+  textarea@lg,
+  select@lg,
+  button@lg {
+    padding: 1rem 1.5rem;
+    font-size: 1.05rem;
+  }
+
+  /* Wider max-widths */
+  .container@lg {
+    max-width: 1400px;
+  }
+}
+
+/* ============================================================================
+   TOUCH DEVICE OPTIMIZATIONS
+   ========================================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+  /* Increase touch target sizes on touch devices */
+  button,
+  a,
+  input[type='button'],
+  input[type='submit'],
+  input[type='checkbox'],
+  input[type='radio'] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Remove hover effects on touch devices */
+  a:hover,
+  button:hover {
+    background-color: inherit;
+  }
+}
+
+/* ============================================================================
+   PRINT STYLES
+   ========================================================================= */
+
+@media print {
+  * {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    background-color: #fff !important;
+    border: 1px solid #000 !important;
+    color: #000 !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+}
+
+/* ============================================================================
+   ACCESSIBILITY: REDUCED MOTION
+   ========================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

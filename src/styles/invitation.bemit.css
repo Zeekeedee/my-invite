@@ -1,0 +1,377 @@
+/**
+ * BEMIT Styles for InvitationDisplay Component
+ * 
+ * Block: .invitation
+ * Elements: __background, __gif, __content, __box, __title, __author, __image, __error-box, __loader
+ * Modifiers: --expired, --invalid, --loading
+ * 
+ * Mobile-first responsive design with IT suffixes (@sm, @md, @lg)
+ */
+
+/* ============================================================================
+   Block: .invitation - Main Container
+   ============================================================================ */
+
+.invitation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+  animation: fadeIn 0.8s ease-out;
+}
+
+/* ============================================================================
+   Element: .invitation__background - GIF Background Container
+   ============================================================================ */
+
+.invitation__background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.invitation__gif {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.invitation__gif-error {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(45, 52, 54, 0.15);
+  color: #2d3436;
+  font-size: 1rem;
+  text-align: center;
+  padding: 2rem;
+  z-index: 10;
+}
+
+/* ============================================================================
+   Element: .invitation__loader - Loading Spinner
+   ============================================================================ */
+
+.invitation__loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  text-align: center;
+}
+
+.invitation__loader p {
+  margin-top: 1rem;
+  color: #2d3436;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* ============================================================================
+   Element: .invitation__content - Content Overlay Container
+   ============================================================================ */
+
+.invitation__content {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(2px);
+  animation: slideUp 0.6s ease-out;
+}
+
+/* ============================================================================
+   Element: .invitation__box - Content Box with Semi-transparent Background
+   ============================================================================ */
+
+.invitation__box {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  animation: scaleIn 0.6s ease-out;
+}
+
+/* ============================================================================
+   Element: .invitation__image - Optional Image Display
+   ============================================================================ */
+
+.invitation__image {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 12px;
+  margin: 0 auto 1.5rem;
+  display: block;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.8s ease-out 0.2s both;
+}
+
+/* ============================================================================
+   Element: .invitation__title - Recipient Name Heading
+   ============================================================================ */
+
+.invitation__title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d3436;
+  margin: 0 0 0.5rem;
+  line-height: 1.2;
+  animation: fadeIn 0.8s ease-out 0.1s both;
+}
+
+/* ============================================================================
+   Element: .invitation__author - Sender Name
+   ============================================================================ */
+
+.invitation__author {
+  font-size: 1.1rem;
+  color: #636e72;
+  margin: 0 0 1.5rem;
+  font-style: italic;
+  animation: fadeIn 0.8s ease-out 0.15s both;
+}
+
+/* ============================================================================
+   Element: .invitation__expiry-notice - Expiration Timer
+   ============================================================================ */
+
+.invitation__expiry-notice {
+  font-size: 0.9rem;
+  color: #d63031;
+  margin: 1rem 0 0;
+  padding: 0.75rem;
+  background: rgba(214, 48, 49, 0.1);
+  border-left: 3px solid #d63031;
+  border-radius: 4px;
+  text-align: left;
+}
+
+/* ============================================================================
+   Error States: .invitation--expired, .invitation--invalid, .invitation--loading
+   ============================================================================ */
+
+.invitation--expired,
+.invitation--invalid,
+.invitation--loading {
+  background-color: #f8f9fa;
+  background-image: none;
+}
+
+/* ============================================================================
+   Element: .invitation__error-box - Error Message Container
+   ============================================================================ */
+
+.invitation__error-box {
+  background: white;
+  border-radius: 20px;
+  padding: 3rem 2rem;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  animation: slideUp 0.6s ease-out;
+}
+
+/* ============================================================================
+   Element: .invitation__error-title - Error Heading
+   ============================================================================ */
+
+.invitation__error-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d3436;
+  margin: 0 0 1rem;
+}
+
+/* ============================================================================
+   Element: .invitation__error-message - Error Message Text
+   ============================================================================ */
+
+.invitation__error-message {
+  font-size: 1.1rem;
+  color: #636e72;
+  margin: 0 0 1rem;
+  line-height: 1.6;
+}
+
+/* ============================================================================
+   Element: .invitation__error-hint - Error Help Text
+   ============================================================================ */
+
+.invitation__error-hint {
+  font-size: 0.95rem;
+  color: #b2bec3;
+  margin: 0;
+  font-style: italic;
+}
+
+/* ============================================================================
+   Responsive Design: Mobile, Tablet, Desktop
+   ============================================================================ */
+
+/* Mobile (0-480px) - Default styles above */
+
+/* Tablet (@sm: 481-768px) */
+@media (min-width: 481px) {
+  .invitation__box {
+    padding: 2.5rem;
+    max-width: 550px;
+  }
+
+  .invitation__title {
+    font-size: 2.25rem;
+  }
+
+  .invitation__author {
+    font-size: 1.2rem;
+  }
+
+  .invitation__image {
+    max-width: 350px;
+  }
+}
+
+/* Desktop (@md: 769-1024px) */
+@media (min-width: 769px) {
+  .invitation__box {
+    padding: 3rem 2.5rem;
+    max-width: 600px;
+  }
+
+  .invitation__content {
+    backdrop-filter: blur(4px);
+  }
+
+  .invitation__title {
+    font-size: 2.5rem;
+  }
+
+  .invitation__author {
+    font-size: 1.3rem;
+  }
+
+  .invitation__image {
+    max-width: 400px;
+    margin-bottom: 2rem;
+  }
+
+  .invitation__error-box {
+    padding: 3.5rem 3rem;
+    max-width: 600px;
+  }
+}
+
+/* Large Desktop (@lg: 1025px+) */
+@media (min-width: 1025px) {
+  .invitation__box {
+    padding: 3.5rem 3rem;
+    max-width: 700px;
+  }
+
+  .invitation__title {
+    font-size: 2.75rem;
+  }
+
+  .invitation__author {
+    font-size: 1.4rem;
+  }
+
+  .invitation__image {
+    max-width: 450px;
+  }
+
+  .invitation__error-box {
+    padding: 4rem 3.5rem;
+    max-width: 700px;
+  }
+
+  .invitation__error-title {
+    font-size: 2.25rem;
+  }
+
+  .invitation__error-message {
+    font-size: 1.2rem;
+  }
+}
+
+/* ============================================================================
+   Accessibility & Print Styles
+   ============================================================================ */
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .invitation,
+  .invitation__content,
+  .invitation__box,
+  .invitation__image,
+  .invitation__title,
+  .invitation__author,
+  .invitation__error-box {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  .invitation__loader {
+    display: none;
+  }
+
+  .invitation {
+    position: relative;
+    height: auto;
+  }
+
+  .invitation__background {
+    display: none;
+  }
+
+  .invitation__content {
+    position: relative;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .invitation__box {
+    padding: 1.75rem;
+  }
+
+  .invitation__title {
+    font-size: 1.75rem;
+  }
+
+  /* Ensure text is readable and tappable on small screens */
+  .invitation__author {
+    font-size: 1rem;
+  }
+}
