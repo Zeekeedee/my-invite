@@ -1,0 +1,279 @@
+/* ============================================================================
+   BEMIT CSS Architecture - My Invite
+   Cute Invitation Website
+   ============================================================================
+   
+   Naming Convention:
+   .block__element--modifier@breakpoint
+   
+   Example:
+   .invitation__content--loading@sm
+   
+   Breakpoints:
+   @sm  - Tablet (481px+)
+   @md  - Desktop (769px+)
+   @lg  - Large Desktop (1025px+)
+   
+   ========================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+
+/* ============================================================================
+   RESET & BASE STYLES
+   ========================================================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Press Start 2P', 'Press start 2P', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  line-height: 1.6;
+  color: #2d3436;
+  background-color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================================
+   TYPOGRAPHY
+   ========================================================================= */
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+h1 {
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+}
+
+h2 {
+  font-size: clamp(1.25rem, 4vw, 2rem);
+}
+
+h3 {
+  font-size: clamp(1.1rem, 3vw, 1.5rem);
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+a {
+  color: #0984e3;
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+
+a:hover {
+  color: #2d3436;
+}
+
+/* ============================================================================
+   INTERACTIVE ELEMENTS
+   ========================================================================= */
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+}
+
+/* ============================================================================
+   UTILITY CLASSES
+   ========================================================================= */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ============================================================================
+   LAYOUT
+   ========================================================================= */
+
+.container {
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 481px) {
+  .container {
+    max-width: 95%;
+  }
+}
+
+@media (min-width: 769px) {
+  .container {
+    max-width: 900px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .container {
+    max-width: 1200px;
+  }
+}
+
+/* ============================================================================
+   IMAGES
+   ========================================================================= */
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Mobile-first: images 100% width by default */
+img {
+  width: 100%;
+}
+
+/* ============================================================================
+   LOADING STATES
+   ========================================================================= */
+
+.is-loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.is-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ============================================================================
+   COLOR PALETTE
+   ========================================================================= */
+
+:root {
+  /* Primary Colors - Soft Pastel */
+  --color-primary-light: #ffdede;
+  --color-primary: #ffa7a7;
+  --color-primary-dark: #ff8b8b;
+  
+  /* Secondary Colors - Soft Pastel */
+  --color-secondary-light: #e9e0ff;
+  --color-secondary: #d6c3ff;
+  --color-secondary-dark: #bfa2ff;
+  
+  /* Neutral */
+  --color-text-dark: #2d3436;
+  --color-text-light: #636e72;
+  --color-border: #dfe6e9;
+  --color-background: #ffffff;
+  
+  /* Status Colors */
+  --color-success: #00b894;
+  --color-error: #d63031;
+  --color-warning: #fdcb6e;
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.15);
+  
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+}
+
+/* ============================================================================
+   8-BIT / PIXEL ART HELPERS
+   ========================================================================= */
+
+/* Make pixel art and backgrounds render crisply */
+img, svg, canvas, video, body {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Utility for 8-bit looking borders */
+.pixel-border {
+  border: 6px solid var(--color-primary-dark);
+  border-radius: 0;
+  box-shadow:
+    6px 6px 0 0 var(--color-primary),
+    -6px -6px 0 0 var(--color-secondary-light);
+}
+
+/* Subtle pixelated button style */
+button.pixel {
+  padding: 0.75rem 1rem;
+  background: linear-gradient(180deg, var(--color-primary-light), var(--color-primary));
+  color: var(--color-text-dark);
+  border: 4px solid var(--color-primary-dark);
+  box-shadow: none;
+}
+
+/* ============================================================================
+   8-BIT HEARTS BACKGROUND PATTERN
+   Uses an inline SVG data URI for a repeating pixel-heart pattern and slow motion
+   ========================================================================= */
+
+/* small pixel heart SVG encoded for data URI */
+body {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'><rect width='40' height='40' fill='transparent'/><g fill='%23ffa7a7'><rect x='12' y='8' width='4' height='4'/><rect x='16' y='8' width='4' height='4'/><rect x='8' y='12' width='4' height='4'/><rect x='12' y='12' width='4' height='4'/><rect x='16' y='12' width='4' height='4'/><rect x='20' y='12' width='4' height='4'/><rect x='10' y='16' width='4' height='4'/><rect x='14' y='16' width='4' height='4'/><rect x='18' y='16' width='4' height='4'/><rect x='12' y='20' width='4' height='4'/><rect x='16' y='20' width='4' height='4'/></g></svg>");
+  background-repeat: repeat;
+  background-size: 80px 80px;
+  background-position: 0 0;
+  animation: float-hearts 48s linear infinite;
+}
+
+@keyframes float-hearts {
+  0% { background-position: 0 0; }
+  50% { background-position: 40px 40px; }
+  100% { background-position: 0 0; }
+}
+
+/* ============================================================================
+   DARK MODE (Future Enhancement)
+   ========================================================================= */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text-dark: #f5f6fa;
+    --color-text-light: #b2bec3;
+    --color-border: #2d3436;
+    --color-background: #263238;
+  }
+}

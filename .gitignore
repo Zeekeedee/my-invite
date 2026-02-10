@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+*.pdf
+.env
+.env.local
+.env.*.local
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.vscode/
+.idea/
+coverage/
