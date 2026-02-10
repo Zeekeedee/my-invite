@@ -156,16 +156,7 @@ export function validateInvitationForm(formData) {
     }
   }
 
-  // Validate GIF URL
-  const gifValidation = validateRequired(formData.gifUrl, 'GIF URL')
-  if (!gifValidation.valid) {
-    errors.gifUrl = gifValidation.error
-  } else {
-    const gifUrlValidation = validateGifUrl(formData.gifUrl)
-    if (!gifUrlValidation.valid) {
-      errors.gifUrl = gifUrlValidation.error
-    }
-  }
+  // Background is fixed to animated 8-bit hearts; no GIF validation required
 
   // Validate image URL (optional)
   if (formData.imageUrl) {

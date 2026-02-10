@@ -1,22 +1,6 @@
 <template>
   <div class="invitation" v-if="invitation">
-    <!-- GIF Background -->
-    <div class="invitation__background">
-      <img
-        v-if="invitation.gifUrl"
-        :src="invitation.gifUrl"
-        :alt="`Background GIF for ${invitation.recipientName}'s invitation`"
-        class="invitation__gif"
-        @load="handleGifLoad"
-        @error="handleGifError"
-      />
-      <div v-if="isLoadingGif" class="invitation__loader">
-        <div class="loader"></div>
-      </div>
-      <div v-if="gifError" class="invitation__gif-error">
-        <p>Background image failed to load</p>
-      </div>
-    </div>
+    <!-- Background is provided by global 8-bit hearts CSS pattern -->
 
     <!-- Content Overlay -->
     <div class="invitation__content">
@@ -33,7 +17,7 @@
 
         <!-- Recipient Name -->
         <h1 class="invitation__title">
-          You're invited, {{ invitation.recipientName }}! 🎉
+          Hi {{ invitation.recipientName }}! Will you be my Valentine? (˶ᵔ ᵕ ᵔ˶)
         </h1>
 
         <!-- Sender Name -->
@@ -100,8 +84,7 @@ const invitation = ref(null)
 const isLoading = ref(true)
 const isInvalid = ref(false)
 const isExpired = ref(false)
-const isLoadingGif = ref(false)
-const gifError = ref(false)
+// GIF handling removed; background provided by CSS hearts pattern
 const imageError = ref(false)
 const expiresIn = ref(null)
 const senderNameFromError = ref('the sender')
@@ -162,9 +145,8 @@ function loadInvitation() {
       return
     }
 
-    // Calculate time remaining
-    const now = Date.now()
-    expiresIn.value = Math.floor((decodedInvitation.expiresAt - now) / 1000)
+    // Calculate time remaining (in seconds)
+    expiresIn.value = Math.floor((new Date(decodedInvitation.expiresAt).getTime() - Date.now()) / 1000)
 
     // Update expiry text every minute
     const expiryInterval = setInterval(() => {
@@ -184,21 +166,6 @@ function loadInvitation() {
   }
 }
 
-/**
- * Handle GIF load
- */
-function handleGifLoad() {
-  isLoadingGif.value = false
-  gifError.value = false
-}
-
-/**
- * Handle GIF load error
- */
-function handleGifError() {
-  isLoadingGif.value = false
-  gifError.value = true
-}
 
 /**
  * Handle image load error

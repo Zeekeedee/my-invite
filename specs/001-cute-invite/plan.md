@@ -1,181 +1,64 @@
 # Implementation Plan: Cute Invitation Website
 
-**Branch**: `001-cute-invite` | **Date**: February 9, 2026 | **Spec**: [spec.md](spec.md)
-**Input**: Feature specification from `/specs/001-cute-invite/spec.md`
-
-**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
+**Branch**: `001-cute-invite` | **Date**: February 11, 2026 | **Spec**: [spec.md](spec.md)
 
 ## Summary
 
-Build a delightful, responsive invitation website using Vue 3 that allows senders to create personalized invitations with GIF backgrounds and optional images. Recipients receive shareable links displaying cute, interactive interfaces with a playfully unclickable "No" button. Implement with BEMIT CSS for scalable, responsive design targeting mobile, tablet, and desktop experiences.
+Build a delightful, responsive invitation website using Vue 3 that allows senders to create personalized invitations using an animated 8-bit hearts background and an optional image. Recipients receive shareable links displaying cute, interactive interfaces with a playfully unclickable "No" button. Implement with BEMIT CSS and pixel-art helpers for a consistent 8-bit aesthetic.
 
 ## Technical Context
 
-**Language/Version**: JavaScript (ES2020+) + Vue 3 (Composition API)  
-**Primary Dependencies**: Vue 3 (35KB gzipped); Vite (dev-time bundler)  
-**Storage**: Client-side URL encoding with optional localStorage for sender history; no backend required  
-**Testing**: Vitest for unit tests, Playwright for component/E2E tests  
-**Target Platform**: Web browser (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+); mobile-first responsive  
-**Project Type**: Single-page web application (SPA) with two routes: form creation + invitation display  
-**Performance Goals**: FCP <1.5s, LCP <2.5s, CLS <0.1, 60 FPS animations  
-**Constraints**: Static hosting compatible (GitHub Pages); no server-side logic; GIF playback must remain smooth on mobile  
-**Scale/Scope**: Single-page app; ~3 primary components; mobile-responsive from phone to desktop
+- Language/Version: JavaScript (ES2020+) + Vue 3 (Composition API)
+- Bundler: Vite
+- Storage: URL-encoded invitation payload (Base64 or compact JSON); optional localStorage for sender history
+- Testing: Vitest (unit), Playwright (E2E)
+- Target: Modern browsers (Chrome, Firefox, Safari, Edge), mobile-first responsive
+- Constraint: Static hosting (GitHub Pages)
 
-## Constitution Check
+## Phases & Timeline
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+Phase 1 — Foundation & Components (Week 1)
+- Scaffold or reuse existing Vue project
+- Confirm `src/styles/main.css` contains hearts background and pixel helpers (already applied)
+- Implement/remove form controls: remove GIF upload, keep optional image upload
+- Data encoding utilities and unit tests
 
-### Static-First ✅ PASS
-- Output: Single HTML page with bundled Vue + CSS + assets
-- All content pre-built and deployed to `dist/` directory
-- No server-side rendering or dynamic backends required
+Phase 2 — Display & UX (Week 2)
+- `InvitationDisplay.vue`: renders names, optional image, and applies pixel styling
+- `YesNoButtons.vue`: implement evasive "No" behavior and accessible fallback
+- Apply `.pixel-border` and `button.pixel` classes where appropriate
+- Component/unit tests
 
-### Client-Side Only ✅ PASS
-- All interactivity (form handling, link generation, button repositioning) runs in browser
-- No external API calls for core functionality
-- Invitation data encoded in URL or stored in localStorage
+Phase 3 — Polish, Tests & Launch (Week 3)
+- E2E tests (Playwright) for create → view → respond flows
+- Performance tuning and cross-browser visual verification
+- Deployment to GitHub Pages and release notes
 
-### Zero Dependencies ⚠️ JUSTIFIED EXCEPTION
-- **Violation**: Vue 3 is a runtime dependency (35KB gzipped)
-- **Justification**: Vue necessary for reactive form handling, component reusability, and interactive button behavior. Core feature complexity (dynamic invitation generation, playful "No" button repositioning with smooth animations) would require extensive vanilla JS boilerplate or be impossible to implement cleanly without framework
-- **Mitigation**: Vue is singular dependency; no additional UI libraries (no Vuetify, no component frameworks). All CSS written in pure BEMIT. Build remains deterministic with Vite
-- **Alternative Rejected**: Vanilla JS would add 2-3x more code complexity and maintenance burden; specifically, reactive state binding and smooth animation handling extremely verbose
+## Implementation Tasks (priority order)
 
-### Build Reproducibility ✅ PASS
-- Build process: `npm run build` with Vite
-- Output: `dist/` directory contains complete static HTML/CSS/JS ready for GitHub Pages
-- Source organized in `src/` (components, pages, styles, utils)
-- Deterministic builds with lockfile (package-lock.json)
+1. Update `InvitationForm.vue`: remove GIF upload UI, validate recipient and sender names, keep optional image input. Update form submission to encode data without GIF.
+2. Ensure `src/styles/main.css` contains the pastel 8-bit palette and animated hearts background (done). Add a `HeartsBackground.vue` wrapper only if componentization helps reuse.
+3. Update `InvitationDisplay.vue` to read URL-encoded invitation payload and render recipient/sender names, optional image, and apply pixel styling.
+4. Implement `YesNoButtons.vue` evasive logic: on pointerenter, compute a new position within the viewport; ensure it never leaves the view and keep movement smooth. Provide keyboard-accessible alternative (e.g., reveal an explanation and a confirm keystroke).
+5. Apply `.pixel-border` and `button.pixel` styles to key UI elements (invitation card, CTA buttons).
+6. Update unit tests: `dataEncoder.spec.js`, `urlParser.spec.js`, `InvitationForm.spec.js`, `InvitationDisplay.spec.js`, `YesNoButtons.spec.js` to reflect removal of GIF requirement.
+7. Run Playwright tests and manual visual checks on desktop and mobile widths; tweak heart pattern scale/speed if needed.
+8. Prepare release: update `PROJECT_SUMMARY.md`, add short release notes, and deploy.
 
-### Basic Testing ✅ PASS
-- Unit tests via Vitest for utility functions (data encoding, validation)
-- Component tests for invitation display and form
-- Manual testing of critical paths: form submission → link generation → invitation view
-- E2E tests for mobile responsiveness
+## Risks & Mitigations
 
-### Constitution Status: APPROVED with Documented Exception
-The Vue dependency is justified by feature complexity and enables cleaner, more maintainable code. All other principles remain intact.
+- Rendering differences (pixelated CSS) across browsers: include static pastel fallback and validate on major browsers.
+- Accessibility of evasive "No" button: provide keyboard flow and ARIA explanation; ensure assistive tech can complete the flow.
+- URL size if images inlined: prefer storing images as optional hostable links or limit inline sizes; show upload guidance in the UI.
 
-## Project Structure
+## Acceptance Criteria (implementation-focused)
 
-### Documentation (this feature)
+- Form accepts recipient and sender names, optional image; GIF upload control removed.
+- Generated shareable link encodes all required data and renders correctly in `InvitationDisplay.vue`.
+- Animated hearts background visible and animated on load; static pastel fallback present if animation fails.
+- "Yes" button records responses; "No" button repositions on pointer attempts and remains inaccessible via pointer, with documented keyboard alternative.
+- Visual style matches pastel 8-bit aesthetic (pixel borders, `Press Start 2P` font applied).
 
-```text
-specs/001-cute-invite/
-├── spec.md              # Feature specification
-├── plan.md              # This file (implementation plan)
-├── research.md          # Phase 0 research findings
-├── data-model.md        # Phase 1 data model and entities
-├── quickstart.md        # Phase 1 quick-start guide
-├── contracts/           # Phase 1 API contracts (JSON schema)
-│   ├── invitation.schema.json
-│   └── response.schema.json
-└── checklists/
-    └── requirements.md  # Specification validation
-```
+---
 
-### Source Code (repository root - Single Web Application)
-
-```text
-my-invite/
-├── src/
-│   ├── components/
-│   │   ├── InvitationForm.vue      # P1: Sender form (recipient, sender, GIF, image)
-│   │   ├── InvitationDisplay.vue   # P2: Recipient view (cute display + button logic)
-│   │   ├── YesNoButtons.vue        # P3: Interactive buttons with reposition behavior
-│   │   └── LoadingState.vue        # Loading/error states
-│   ├── pages/
-│   │   ├── CreatePage.vue          # Form creation page (P1)
-│   │   └── ViewPage.vue            # Invitation view page (P2)
-│   ├── styles/
-│   │   ├── main.css                # BEMIT base styles
-│   │   ├── components.bemit.css    # Component-specific BEMIT styles
-│   │   ├── responsive.bemit.css    # Responsive breakpoint variants
-│   │   └── animations.css          # Cute animations (button reposition, fade-ins)
-│   ├── utils/
-│   │   ├── dataEncoder.js          # Base64 encoding/decoding invitation data
-│   │   ├── urlParser.js            # URL parameter parsing
-│   │   ├── validator.js            # Form validation logic
-│   │   └── fileHandler.js          # File upload and base64 conversion
-│   ├── App.vue                     # Root component (routing logic)
-│   └── main.js                     # Vue app entry point
-├── tests/
-│   ├── unit/
-│   │   ├── dataEncoder.spec.js
-│   │   ├── urlParser.spec.js
-│   │   └── validator.spec.js
-│   ├── components/
-│   │   ├── InvitationForm.spec.js
-│   │   ├── InvitationDisplay.spec.js
-│   │   └── YesNoButtons.spec.js
-│   └── e2e/
-│       ├── form-submission.spec.js     # Test P1 flow
-│       ├── invitation-view.spec.js     # Test P2 flow
-│       └── mobile-responsive.spec.js   # Test mobile experience
-├── public/
-│   └── index.html                  # HTML entry point
-├── dist/                           # Build output (generated)
-├── vite.config.js                  # Vite configuration
-├── vitest.config.js                # Test configuration
-├── package.json                    # Dependencies, scripts
-└── README.md                       # Development guide
-```
-
-**Structure Decision**: Single web application (SPA) with Vue 3. Two primary routes:
-1. **Create** (`/`): Form page for senders to input invitation details
-2. **View** (`/?id=...`): Recipient display page showing personalized invitation with playful buttons
-
-All styles follow BEMIT methodology with responsive suffixes. Components organize by feature alignment with user stories: form creation (P1), display logic (P2), interactive buttons (P3).
-
-## Implementation Phases
-
-### Phase 1: Foundation & Components (Weeks 1-2)
-
-**Deliverables**:
-- Vue 3 project scaffold with Vite
-- BEMIT CSS structure and responsive system
-- `InvitationForm.vue` component with form validation
-- Data encoding utilities (Base64 encode/decode, URL parser)
-- Unit tests for utilities
-
-**Success Criteria**:
-- Form renders correctly on mobile, tablet, desktop
-- Form validation works (required fields, URL format)
-- Generated link is shareable and copyable
-
-### Phase 2: Display & UX (Weeks 2-3)
-
-**Deliverables**:
-- `InvitationDisplay.vue` component for viewing invitations
-- `YesNoButtons.vue` with playful "No" button repositioning
-- Animations and cute styling
-- Responsive design verified on mobile devices
-- Component tests
-
-**Success Criteria**:
-- Invitation displays correctly from URL parameters
-- "Yes" button is clickable and records response
-- "No" button repositions smoothly on hover
-- Layout looks adorable on all device sizes
-
-### Phase 3: Polish & Launch (Week 4)
-
-**Deliverables**:
-- E2E tests for full user journeys
-- Performance optimization (bundle size, animations)
-- Error handling (expired links, invalid data)
-- Deployment setup (GitHub Pages or Netlify)
-- Documentation
-
-**Success Criteria**:
-- All tests passing
-- FCP <1.5s, LCP <2.5s, CLS <0.1
-- Deployed and live on GitHub Pages
-
-## Related Documentation
-
-- **Feature Specification**: [spec.md](spec.md) — Requirements and acceptance criteria
-- **Research Findings**: [research.md](research.md) — Technology decisions and rationale
-- **Data Model**: [data-model.md](data-model.md) — Entity definitions and relationships
-- **JSON Schemas**: [contracts/](contracts/) — Data validation schemas
-- **Quick-Start Guide**: [quickstart.md](quickstart.md) — Developer setup and implementation patterns
+*Prepared by the dev agent to reflect clarification on background choice (8-bit hearts, no GIF uploads).*

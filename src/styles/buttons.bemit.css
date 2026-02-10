@@ -46,7 +46,7 @@
   position: absolute;
   padding: 1rem 2rem;
   border: none;
-  border-radius: 12px;
+  border-radius: 0;
   font-size: 1.1rem;
   font-weight: 600;
   font-family: inherit;
@@ -119,9 +119,12 @@
   top: 50%;
   left: 50%;
   margin-left: 100px;
-  transform: translateY(-50%);
-  background: linear-gradient(135deg, #a29bfe 0%, #fab1a0 100%);
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, #ffb366 100%);
   color: #2d3436;
+  box-shadow: 0 8px 24px rgba(255, 218, 167, 0.4);
+  border: 6px solid var(--color-primary-dark);
+  image-rendering: pixelated;
+  z-index: 10;
   box-shadow: 0 8px 24px rgba(186, 85, 211, 0.3);
   cursor: default;
   pointer-events: none;
@@ -160,11 +163,11 @@
 .buttons__confirmation-content {
   position: relative;
   text-align: center;
-  max-width: 400px;
+  max-width: fit-content;
   background: linear-gradient(135deg, rgba(255, 218, 167, 0.1) 0%, rgba(250, 177, 160, 0.1) 100%);
   border-radius: 16px;
   padding: 2rem;
-  border: 2px solid var(--color-primary-light);
+  border: 2px solid #ffa7a7;
   backdrop-filter: blur(4px);
 }
 
@@ -253,19 +256,20 @@
     max-width: 100%;
   }
 
-  .buttons__button {
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    border-radius: 10px;
-    min-height: 44px;
-  }
-
-  .buttons__button--yes {
-    min-width: 100px;
-  }
-
   .buttons__button--no {
-    margin-left: 80px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: 100px;
+    transform: translateY(-50%);
+    background: linear-gradient(135deg, #a29bfe 0%, #fab1a0 100%);
+    color: #2d3436;
+    box-shadow: 0 8px 24px rgba(186, 85, 211, 0.3);
+    cursor: pointer;
+    pointer-events: auto;
+    border: 6px solid var(--color-secondary-dark);
+    image-rendering: pixelated;
+    z-index: 5;
   }
 
   .buttons__confirmation-content {
@@ -422,7 +426,7 @@
 
   .buttons__confirmation-content {
     background: linear-gradient(135deg, rgba(255, 165, 2, 0.15) 0%, rgba(255, 118, 117, 0.15) 100%);
-    border-color: #ffa502;
+    border-color: #ffa7a7;
     color: #fff;
   }
 

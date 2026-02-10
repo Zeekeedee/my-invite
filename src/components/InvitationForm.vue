@@ -39,23 +39,7 @@
           </span>
         </div>
 
-        <!-- GIF URL Field -->
-        <div class="form__section">
-          <label for="gif-url" class="form__label">Background GIF URL *</label>
-          <input
-            id="gif-url"
-            v-model="form.gifUrl"
-            type="url"
-            class="form__input"
-            :class="{ 'form__input--error': errors.gifUrl }"
-            placeholder="e.g., https://example.com/confetti.gif"
-            @blur="validateField('gifUrl')"
-          />
-          <span v-if="errors.gifUrl" class="form__error">
-            {{ errors.gifUrl }}
-          </span>
-          <p class="form__hint">Must be a valid .gif URL</p>
-        </div>
+        <!-- (GIF uploads removed — using animated 8-bit hearts background) -->
 
         <!-- Optional Image URL Field -->
         <div class="form__section">
@@ -78,7 +62,7 @@
         <!-- Submit Button -->
         <button
           type="submit"
-          class="form__button form__button--primary"
+          class="form__button form__button--primary pixel"
           :disabled="isLoading"
         >
           {{ isLoading ? 'Generating...' : 'Generate Invitation Link' }}
@@ -100,7 +84,7 @@
             />
             <button
               type="button"
-              class="form__button form__button--copy"
+              class="form__button form__button--copy pixel"
               @click="copyToClipboard"
             >
               {{ copiedText }}
@@ -109,7 +93,7 @@
 
           <button
             type="button"
-            class="form__button form__button--secondary"
+            class="form__button form__button--secondary pixel"
             @click="resetForm"
           >
             Create Another
@@ -130,7 +114,6 @@ import { generateUrl } from '../utils/urlParser.js'
 const form = ref({
   recipientName: '',
   senderName: '',
-  gifUrl: '',
   imageUrl: ''
 })
 
@@ -256,7 +239,6 @@ function resetForm() {
   form.value = {
     recipientName: '',
     senderName: '',
-    gifUrl: '',
     imageUrl: ''
   }
   errors.value = {}
@@ -319,7 +301,7 @@ function resetForm() {
 
 .form__input:focus {
   outline: none;
-  border-color: #fdcb6e;
+  border-color: #fd6e6e;
   box-shadow: 0 0 0 3px rgba(253, 203, 110, 0.1);
 }
 
@@ -336,7 +318,7 @@ function resetForm() {
 
 .form__hint {
   font-size: 0.8rem;
-  color: #b2bec3;
+  color: #4d5355;
   margin: 0;
 }
 
@@ -352,7 +334,7 @@ function resetForm() {
 }
 
 .form__button--primary {
-  background-color: #fdcb6e;
+  background-color: #fd6e6e;
   color: white;
   box-shadow: 0 4px 12px rgba(253, 203, 110, 0.3);
 }

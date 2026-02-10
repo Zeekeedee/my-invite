@@ -1,15 +1,16 @@
+```markdown
 # Feature Specification: Cute Invitation Website
 
 **Feature Branch**: `001-cute-invite`  
 **Created**: February 8, 2026  
 **Status**: Draft  
-**Input**: User description: "I am building an invitation website. I want it to look cute and adorable for whoever receives the invite to enjoy. The landing page is for inputting the gif to be playing in the background, name of recipient, name of sender, and an optional image input. The input should generate a link to a github page to allow the recipient to enjoy the website. The recipient should be given the option yes/no but the no would reposition during hover."
+**Input**: User description: "I am building an invitation website. I want it to look cute and adorable for whoever receives the invite to enjoy. The landing page collects the recipient name, sender name, and an optional image input. Invitations use an animated 8-bit hearts pattern as the site background (no GIF uploads). The input should generate a link to a GitHub page to allow the recipient to enjoy the website. The recipient should be given the option yes/no but the no would reposition during hover."
 
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Create and Share an Invitation (Priority: P1)
 
-A sender (the person creating the invitation) wants to craft a personalized, visually engaging invitation to send to a recipient. They fill out a form with custom details (recipient name, sender name, background GIF, and optional image) and receive a unique shareable link they can send via any medium.
+A sender (the person creating the invitation) wants to craft a personalized, visually engaging invitation to send to a recipient. They fill out a form with custom details (recipient name, sender name, and optional image) and receive a unique shareable link they can send via any medium. The invitation background is an animated 8-bit hearts pattern (no GIF uploads).
 
 **Why this priority**: This is the core value proposition of the system. Without the ability to create and share invitations, the entire product has no purpose. This is the foundation that enables all other features.
 
@@ -17,26 +18,26 @@ A sender (the person creating the invitation) wants to craft a personalized, vis
 
 **Acceptance Scenarios**:
 
-1. **Given** a sender is on the creation form, **When** they enter a recipient name, sender name, upload a GIF, and submit, **Then** a unique shareable link is generated and displayed to the sender
-2. **Given** a sender is on the creation form, **When** they enter a recipient name, sender name, upload a GIF, and optionally add an image, **Then** all fields are accepted and a link is generated
-3. **Given** a sender has completed the form, **When** they receive the shareable link, **Then** the link correctly encodes all the invitation data (recipient name, sender name, GIF, image)
+1. **Given** a sender is on the creation form, **When** they enter a recipient name and sender name and submit, **Then** a unique shareable link is generated and displayed to the sender
+2. **Given** a sender is on the creation form, **When** they enter a recipient name, sender name, and optionally add an image, **Then** all fields are accepted and a link is generated
+3. **Given** a sender has completed the form, **When** they receive the shareable link, **Then** the link correctly encodes all the invitation data (recipient name, sender name, optional image)
 4. **Given** required fields are empty, **When** the sender attempts to submit the form, **Then** clear error messages indicate which fields need to be filled
 
 ---
 
 ### User Story 2 - Receive and View Personalized Invitation (Priority: P2)
 
-A recipient receives a link to a personalized invitation and opens it to see a cute, adorable interface displaying the sender's message with the custom GIF background and optional image.
+A recipient receives a link to a personalized invitation and opens it to see a cute, adorable interface displaying the sender's message with the animated 8-bit hearts background and optional image.
 
 **Why this priority**: This directly enables the user experience for recipients. It's critical to delivering the delight and engagement that makes the invitation memorable.
 
-**Independent Test**: Can be fully tested by opening the generated link and verifying all personalized content (sender name, recipient name, GIF, image) displays correctly with an attractive, polished interface.
+**Independent Test**: Can be fully tested by opening the generated link and verifying all personalized content (sender name, recipient name, animated background, image) displays correctly with an attractive, polished interface.
 
 **Acceptance Scenarios**:
 
-1. **Given** a recipient opens the invitation link, **When** the page loads, **Then** all personalized content displays correctly (recipient name, sender name, background GIF)
+1. **Given** a recipient opens the invitation link, **When** the page loads, **Then** all personalized content displays correctly (recipient name, sender name, animated 8-bit hearts background)
 2. **Given** an optional image was included in the invitation, **When** the recipient views the page, **Then** the image displays prominently in the interface
-3. **Given** the page is loading, **When** animations and transitions occur, **Then** they feel smooth, cute, and delight the recipient
+3. **Given** the page is loading, **When** animations and transitions occur, **Then** they feel smooth, cute, and delight the recipient (including the subtle hearts background motion)
 4. **Given** a recipient is viewing the invitation on different devices, **When** they interact with the interface, **Then** the layout is responsive and looks adorable on mobile, tablet, and desktop
 
 ---
@@ -60,7 +61,7 @@ A recipient encounters two buttons: "Yes" and "No". The "No" button is unclickab
 
 ### Edge Cases
 
-- What happens when a GIF fails to load or is invalid? System should display a placeholder or fallback with a graceful error message
+- What happens when the animated hearts pattern fails to render? System should display a simple static pastel background fallback with a graceful error message
 - What happens when a user shares an invitation link multiple times? Each access should render the same invitation with consistent data
 - How does the system handle very long names (recipient or sender)? Text should wrap or truncate elegantly without breaking the layout
 - What if a user tries to access an invitation link that no longer exists? They should see a friendly message explaining the link may have expired or been deleted
@@ -72,15 +73,15 @@ A recipient encounters two buttons: "Yes" and "No". The "No" button is unclickab
 ### Functional Requirements
 
 - **FR-001**: System MUST allow senders to input a recipient name
-- **FR-002**: System MUST allow senders to input a sender name  
-- **FR-003**: System MUST allow senders to upload a GIF file for the background
+- **FR-002**: System MUST allow senders to input a sender name
+- **FR-003**: System MUST use an animated 8-bit hearts pattern as the invitation background (no GIF uploads)
 - **FR-004**: System MUST allow senders to optionally upload an image file
-- **FR-005**: System MUST validate that required fields (recipient name, sender name, GIF) are provided before generating a link
+- **FR-005**: System MUST validate that required fields (recipient name, sender name) are provided before generating a link
 - **FR-006**: System MUST generate a unique, shareable link that encodes all invitation data
 - **FR-007**: Senders MUST be able to copy and share the generated link easily
 - **FR-008**: System MUST allow recipients to access invitations via the shareable link
 - **FR-009**: Recipients MUST see a visually cute and adorable interface displaying the invitation
-- **FR-010**: Recipients MUST see the background GIF playing continuously in the background
+- **FR-010**: Recipients MUST see the animated 8-bit hearts background playing continuously
 - **FR-011**: Recipients MUST see their name and the sender's name clearly displayed
 - **FR-012**: If an image was included, recipients MUST see it prominently displayed on the invitation
 - **FR-013**: System MUST display a clickable "Yes" button that records the recipient's affirmative response
@@ -90,7 +91,7 @@ A recipient encounters two buttons: "Yes" and "No". The "No" button is unclickab
 
 ### Key Entities
 
-- **Invitation**: Represents a single invitation instance with attributes: recipient name, sender name, background GIF, optional image, unique shareable link, creation timestamp
+- **Invitation**: Represents a single invitation instance with attributes: recipient name, sender name, animated 8-bit hearts background, optional image, unique shareable link, creation timestamp
 - **Recipient Response**: Represents a recipient's "Yes" response to an invitation with attributes: response type (yes), timestamp, recipient identifier (if available)
 
 ## Success Criteria *(mandatory)*
@@ -99,7 +100,7 @@ A recipient encounters two buttons: "Yes" and "No". The "No" button is unclickab
 
 - **SC-001**: Senders can complete the invitation form and receive a shareable link in under 1 minute
 - **SC-002**: Recipients can open and view a shareable link without errors on first attempt 95% of the time
-- **SC-003**: The background GIF loads and plays smoothly for 90% of recipients on their first access
+- **SC-003**: The animated 8-bit hearts background renders and animates smoothly for 90% of recipients on their first access
 - **SC-004**: Recipients find the interface cute and engaging (target: 80% positive feedback in user testing)
 - **SC-005**: Recipients can click "Yes" and submit their response on first attempt 95% of the time
 - **SC-006**: The "No" button successfully repositions away from cursor attempts 100% of the time and remains unclickable
@@ -109,7 +110,7 @@ A recipient encounters two buttons: "Yes" and "No". The "No" button is unclickab
 ## Scope
 
 ### In Scope
-- Creating and customizing invitations with GIF backgrounds
+- Creating and customizing invitations with an animated 8-bit hearts background
 - Generating and sharing invitation links
 - Displaying personalized invitations to recipients
 - Interactive yes/no response buttons with playful "No" repositioning behavior
@@ -126,9 +127,17 @@ A recipient encounters two buttons: "Yes" and "No". The "No" button is unclickab
 ## Assumptions
 
 1. **Design Priority**: The cute and adorable aesthetic is the top priority and should be maintained across all features
-2. **GIF Support**: GIFs will be validated as valid image files up to a reasonable size (e.g., 10MB); invalid files will be rejected with clear error messages
+2. **Background Approach**: Invitations use an animated 8-bit hearts pattern for the background; GIF uploads are not supported
 3. **Data Storage**: Invitation data and recipient responses will be stored (duration: at least 30 days); specific storage mechanism is implementation detail
 4. **Link Format**: Invitation links will be shareable via URL and remain accessible for at least 30 days after creation
 5. **Browser Support**: The website will work on modern browsers (Chrome, Firefox, Safari, Edge) and be responsive on mobile devices
 6. **Cute Design**: "Cute and adorable" will be achieved through appropriate color schemes, typography, animations, illustrations, and micro-interactions
 7. **User Profile Data**: The system does not require user authentication; senders are identified only by the name they provide in the invitation form
+
+## Clarifications
+
+### Session 2026-02-11
+
+- Q: Should the background GIF upload be replaced with the 8-bit hearts pattern? → A: C (Replace GIF background entirely with hearts pattern; no GIF uploads)
+
+```

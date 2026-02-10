@@ -12,7 +12,7 @@ import { validateInvitationForm } from './validator.js'
  * @property {string} id - Unique identifier (SHA256 hash)
  * @property {string} recipientName - Recipient name
  * @property {string} senderName - Sender name
- * @property {string} gifUrl - URL to background GIF
+ * @property {string} background - Background type/descriptor (e.g. 'hearts')
  * @property {string} [imageUrl] - Optional URL to image
  * @property {string} createdAt - ISO8601 timestamp
  * @property {string} expiresAt - ISO8601 expiration timestamp
@@ -60,7 +60,7 @@ export async function createInvitation(formData) {
     id,
     recipientName: formData.recipientName,
     senderName: formData.senderName,
-    gifUrl: formData.gifUrl,
+    background: 'hearts',
     imageUrl: formData.imageUrl || null,
     createdAt,
     expiresAt,
@@ -95,7 +95,7 @@ export function decodeInvitation(encoded) {
     const invitation = JSON.parse(json)
     
     // Validate required fields
-    const requiredFields = ['id', 'recipientName', 'senderName', 'gifUrl', 'createdAt', 'expiresAt', 'status']
+    const requiredFields = ['id', 'recipientName', 'senderName', 'background', 'createdAt', 'expiresAt', 'status']
     for (const field of requiredFields) {
       if (!(field in invitation)) {
         throw new Error(`Missing required field: ${field}`)
@@ -139,8 +139,8 @@ export function validateInvitationSchema(invitation) {
   if (!invitation.senderName || typeof invitation.senderName !== 'string' || invitation.senderName.length === 0) {
     errors.push('Invalid or missing senderName')
   }
-  if (!invitation.gifUrl || typeof invitation.gifUrl !== 'string') {
-    errors.push('Invalid or missing gifUrl')
+  if (!invitation.background || typeof invitation.background !== 'string') {
+    errors.push('Invalid or missing background')
   }
   if (!['active', 'expired'].includes(invitation.status)) {
     errors.push('Invalid status')

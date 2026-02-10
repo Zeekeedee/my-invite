@@ -3,35 +3,37 @@
     <div v-if="!isResponded" class="buttons__container">
       <!-- "Yes" Button - Always Clickable -->
       <button
-        class="buttons__button buttons__button--yes"
+        ref="yesButtonRef"
+        class="buttons__button buttons__button--yes button pixel"
         @click="handleYes"
         :disabled="isProcessing"
       >
-        {{ isProcessing ? '✨ Recording...' : 'Yes! 🎉' }}
+        {{ isProcessing ? '✨ Recording...' : 'Yes! ❤︎' }}
       </button>
 
-      <!-- "No" Button - Playful & Unclickable -->
+      <!-- "No" Button - Playful & Unclickable (pointer usable) -->
       <button
         ref="noButtonRef"
-        class="buttons__button buttons__button--no"
+        class="buttons__button buttons__button--no button pixel"
         @mouseenter="repositionNoButton"
         @touchstart.prevent="repositionNoButton"
+        @focus="announceNoBehavior"
         :style="noButtonStyle"
-        pointer-events="none"
-        disabled
+        aria-describedby="no-hint"
       >
-        No 😊
+        No (˵ ¬ᴗ¬˵)
       </button>
+      <span id="no-hint" class="sr-only" role="status">This button playfully moves away; keyboard users should press Yes to respond.</span>
     </div>
 
     <!-- Confirmation Message After Yes -->
     <div v-else class="buttons__confirmation">
       <div class="buttons__confirmation-content">
         <h2 class="buttons__confirmation-title">
-          ✨ Yay! {{ recipientName }} is coming! ✨
+          ✨ ✧｡◝(ᵔᗜᵔ)◜✧*｡ ✨
         </h2>
         <p class="buttons__confirmation-message">
-          Thanks for confirming! The celebration begins! 🎊
+          Thanks for saying yes, {{ props.recipientName }}! ദ്ദി(˵ •̀ ᴗ - ˵ ) ✧
         </p>
         <div class="confetti confetti-particle" v-for="n in 20" :key="n"></div>
       </div>
@@ -66,6 +68,7 @@ const props = defineProps({
 // State
 const isResponded = ref(false)
 const isProcessing = ref(false)
+const yesButtonRef = ref(null)
 const noButtonRef = ref(null)
 const noButtonPosition = ref({ x: 0, y: 0 })
 
@@ -120,6 +123,27 @@ function repositionNoButton() {
   if (isProcessing.value || isResponded.value) return
 
   noButtonPosition.value = calculateRandomPosition()
+}
+
+/**
+ * Initialize starting positions to keep No button near its default spot
+ */
+function initializePositions() {
+  const noBtn = noButtonRef.value
+  if (!noBtn) return
+
+  // Center baseline near viewport center and offset to the right
+  const rect = noBtn.getBoundingClientRect()
+  const startX = (window.innerWidth / 2) - rect.left - (rect.width / 2)
+  const startY = (window.innerHeight / 2) - rect.top - (rect.height / 2)
+
+  // Offset so No starts to the right of Yes
+  noButtonPosition.value = { x: startX + 80, y: startY }
+}
+
+function announceNoBehavior() {
+  // Accessibility: ensure screen readers receive hint via live region (sr-only span)
+  // Nothing else required; keyboard users are guided to use the Yes button
 }
 
 /**
@@ -185,6 +209,7 @@ onMounted(() => {
   checkExistingResponse()
   // Initialize no button position (off screen initially)
   noButtonPosition.value = { x: 0, y: 0 }
+  requestAnimationFrame(() => initializePositions())
 })
 </script>
 
