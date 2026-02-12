@@ -1,11 +1,13 @@
 <template>
   <div class="invitation" v-if="invitation">
-    <!-- Background is provided by global 8-bit hearts CSS pattern -->
-
     <!-- Content Overlay -->
     <div class="invitation__content">
+      <!-- Pixel border SVG (decorative) -->
+      <svg class="invitation__pixel-border" aria-hidden="true" role="presentation" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <rect x="0" y="0" width="100%" height="100%" fill="none" stroke="currentColor" stroke-width="4" shape-rendering="crispEdges" stroke-linejoin="miter" />
+      </svg>
       <!-- Content Box -->
-      <div class="invitation__box">
+        <div class="invitation__box invitation__box--pixel">
         <!-- Optional Image -->
         <img
           v-if="invitation.imageUrl && !imageError"
