@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Heart Pattern Schema",
+  "type": "object",
+  "properties": {
+    "columns": { "type": "integer", "minimum": 0 },
+    "columnOffsetPattern": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["up","down"] }
+    },
+    "icon": {
+      "type": "object",
+      "properties": {
+        "width": { "type": "integer", "enum": [24] },
+        "height": { "type": "integer", "enum": [24] },
+        "outline": { "type": "string" }
+      },
+      "required": ["width","height","outline"]
+    }
+  },
+  "required": ["columns","columnOffsetPattern","icon"]
+}

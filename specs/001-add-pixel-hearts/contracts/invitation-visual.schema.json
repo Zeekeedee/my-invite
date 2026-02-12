@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Invitation Visual Schema",
+  "type": "object",
+  "properties": {
+    "pixelBorder": { "type": "boolean" },
+    "heartIconSize": { "type": "integer", "enum": [24] },
+    "heartColumns": { "type": "integer", "minimum": 0 },
+    "heartsDecorative": { "type": "boolean" }
+  },
+  "required": ["pixelBorder", "heartIconSize", "heartsDecorative"]
+}
