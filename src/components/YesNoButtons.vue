@@ -38,6 +38,16 @@
         <div class="confetti confetti-particle" v-for="n in 20" :key="n"></div>
       </div>
     </div>
+
+    <!-- Floating Giggle Boxes -->
+    <div
+      v-for="giggleBox in floatingGiggleBoxes"
+      :key="giggleBox.id"
+      class="giggle-box"
+      :style="{ left: giggleBox.position.x + 'px', top: giggleBox.position.y + 'px' }"
+    >
+      <img :src="giggleBox.gifUrl" alt="giggle" class="giggle-box__image" />
+    </div>
   </div>
 </template>
 
@@ -71,6 +81,19 @@ const isProcessing = ref(false)
 const yesButtonRef = ref(null)
 const noButtonRef = ref(null)
 const noButtonPosition = ref({ x: 0, y: 0 })
+const floatingGiggleBoxes = ref([])
+let giggleBoxIdCounter = 0
+
+// Giggle GIF tracking - ensures no repeats until all are used
+const availableGiggleGifs = [
+  '/gifs/gif.gif',
+  '/gifs/Lmao%20Lol%20GIF%20by%20STRAPPED!.gif',
+  '/gifs/Mike%20Myers%20Evil%20Laugh%20GIF.gif',
+  '/gifs/Nick%20Offerman%20Laughing%20GIF.gif',
+  '/gifs/Ryan%20Gosling%20Reaction%20GIF.gif',
+  '/gifs/Season%203%20Nbc%20GIF%20by%20The%20Office.gif'
+]
+const usedGifIndices = ref(new Set())
 
 // Computed style for no button repositioning
 const noButtonStyle = computed(() => ({
@@ -81,6 +104,7 @@ const noButtonStyle = computed(() => ({
 /**
  * Calculate random position for no button
  * Keeps button within viewport bounds with padding
+ * Calculates translate offsets relative to button's original position
  */
 function calculateRandomPosition() {
   const button = noButtonRef.value
@@ -91,54 +115,149 @@ function calculateRandomPosition() {
   const buttonWidth = rect.width
   const buttonHeight = rect.height
 
-  // Available space (with padding from edges)
-  const maxX = window.innerWidth - buttonWidth - padding
-  const maxY = window.innerHeight - buttonHeight - padding
+  // Calculate button's original (untranslated) position
+  const originalX = rect.left - noButtonPosition.value.x
+  const originalY = rect.top - noButtonPosition.value.y
+
+  // Calculate min/max translate values to keep button in viewport
+  const minTranslateX = padding - originalX
+  const maxTranslateX = window.innerWidth - buttonWidth - padding - originalX
+  
+  const minTranslateY = padding - originalY
+  const maxTranslateY = window.innerHeight - buttonHeight - padding - originalY
 
   // Minimum movement distance to make it feel playful (not just tiny movements)
-  const minDistance = Math.min(maxX, maxY) * 0.15
+  const minDistance = Math.min(window.innerWidth, window.innerHeight) * 0.15
 
   let newX, newY, distance
   
   // Keep generating until we get a movement far enough away
   do {
-    newX = Math.max(padding, Math.min(maxX, Math.random() * (maxX - padding)))
-    newY = Math.max(padding, Math.min(maxY, Math.random() * (maxY - padding)))
+    newX = minTranslateX + Math.random() * (maxTranslateX - minTranslateX)
+    newY = minTranslateY + Math.random() * (maxTranslateY - minTranslateY)
     
     distance = Math.sqrt(
       Math.pow(newX - noButtonPosition.value.x, 2) +
       Math.pow(newY - noButtonPosition.value.y, 2)
     )
-  } while (distance < minDistance && maxX > 0 && maxY > 0)
+  } while (distance < minDistance && maxTranslateX > minTranslateX && maxTranslateY > minTranslateY)
 
   return { x: newX, y: newY }
 }
 
 /**
  * Handle no button mouseenter/touchstart
- * Repositions button away from cursor
+ * Repositions button away from cursor and creates a giggle box
  */
 function repositionNoButton() {
   // Debounce rapid movements to prevent jank
   if (isProcessing.value || isResponded.value) return
 
   noButtonPosition.value = calculateRandomPosition()
+  createGiggleBox()
 }
 
 /**
- * Initialize starting positions to keep No button near its default spot
+ * Get a random URL from available giggle GIFs
+ * Ensures no GIF is repeated until the entire batch has been used
+ * Future: could be replaced with an API that fetches available GIFs
+ */
+function getRandomGiggleGif() {
+  // If all GIFs have been used, reset the set to start a new batch
+  if (usedGifIndices.value.size === availableGiggleGifs.length) {
+    usedGifIndices.value.clear()
+  }
+
+  // Get list of available indices (not yet used)
+  const availableIndices = availableGiggleGifs
+    .map((_, index) => index)
+    .filter(index => !usedGifIndices.value.has(index))
+
+  // Pick a random available index
+  const randomIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)]
+
+  // Mark this index as used
+  usedGifIndices.value.add(randomIndex)
+
+  return availableGiggleGifs[randomIndex]
+}
+
+/**
+ * Calculate a random position outside the invitation box
+ * Avoids placing giggle boxes on top of the invitation content
+ */
+function calculateRandomGigglePosition() {
+  const padding = 20
+  const boxSize = 100
+
+  // Find the invitation box element
+  const invitationBox = document.querySelector('.invitation__box')
+  let invitationBounds = null
+
+  if (invitationBox) {
+    invitationBounds = invitationBox.getBoundingClientRect()
+  }
+
+  let x, y, valid
+
+  // Keep trying positions until we find one outside the invitation box
+  do {
+    valid = true
+    x = Math.random() * (window.innerWidth - boxSize - padding) + padding
+    y = Math.random() * (window.innerHeight - boxSize - padding) + padding
+
+    // Check if position overlaps with invitation box
+    if (invitationBounds) {
+      const giggleRect = {
+        left: x,
+        right: x + boxSize,
+        top: y,
+        bottom: y + boxSize
+      }
+
+      // Check for overlap
+      if (!(giggleRect.right < invitationBounds.left ||
+            giggleRect.left > invitationBounds.right ||
+            giggleRect.bottom < invitationBounds.top ||
+            giggleRect.top > invitationBounds.bottom)) {
+        valid = false
+      }
+    }
+  } while (!valid)
+
+  return { x, y }
+}
+
+/**
+ * Create a floating giggle box at random position
+ * Box displays a random giggle GIF and removes itself when done
+ */
+function createGiggleBox() {
+  const id = giggleBoxIdCounter++
+  const gifUrl = getRandomGiggleGif()
+  const position = calculateRandomGigglePosition()
+
+  const giggleBox = {
+    id,
+    gifUrl,
+    position
+  }
+
+  floatingGiggleBoxes.value.push(giggleBox)
+
+  // Remove giggle box after GIF finishes (assume 2-3 seconds for loading + playback)
+  // You can adjust the timeout based on actual GIF duration
+  setTimeout(() => {
+    floatingGiggleBoxes.value = floatingGiggleBoxes.value.filter(box => box.id !== id)
+  }, 3000)
+}
+
+/**
+ * Initialize no button to natural position
  */
 function initializePositions() {
-  const noBtn = noButtonRef.value
-  if (!noBtn) return
-
-  // Center baseline near viewport center and offset to the right
-  const rect = noBtn.getBoundingClientRect()
-  const startX = (window.innerWidth / 2) - rect.left - (rect.width / 2)
-  const startY = (window.innerHeight / 2) - rect.top - (rect.height / 2)
-
-  // Offset so No starts to the right of Yes
-  noButtonPosition.value = { x: startX + 80, y: startY }
+  // Start at natural DOM position (no translation)
+  noButtonPosition.value = { x: 0, y: 0 }
 }
 
 function announceNoBehavior() {
@@ -215,4 +334,32 @@ onMounted(() => {
 
 <style scoped>
 @import '../styles/buttons.bemit.css';
+
+.giggle-box {
+  position: fixed;
+  width: 100px;
+  height: 100px;
+  pointer-events: none;
+  z-index: 1000;
+  animation: giggle-pop-in 0.3s ease-out;
+}
+
+.giggle-box__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes giggle-pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 </style>
