@@ -2,12 +2,17 @@ name: Deploy Vue
 
 on:
   push:
-    branches: [main]
+    branches: [main] # Ensure this is 'main' or 'master' depending on your repo
 
 permissions:
   contents: read
   pages: write
   id-token: write
+
+# Prevent multiple deployments from running at once
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   build-and-deploy:
@@ -20,14 +25,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
       - name: Install Dependencies
-        # If this fails with 127, it means the environment is broken
         run: npm install
 
+      - name: Fix Permissions
+        # This solves the 'vite: Permission denied' error
+        run: chmod -R +x node_modules/.bin
+
       - name: Build
-        # We use 'npx vite build' as a backup in case 'npm run build' is missing
-        run: npx vite build
+        # This will now have permission to run
+        run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -35,4 +44,5 @@ jobs:
           path: ./dist
 
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
