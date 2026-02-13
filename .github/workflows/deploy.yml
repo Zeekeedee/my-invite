@@ -2,14 +2,13 @@ name: Deploy Vue
 
 on:
   push:
-    branches: [main] # Ensure this is 'main' or 'master' depending on your repo
+    branches: [main]
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Prevent multiple deployments from running at once
 concurrency:
   group: "pages"
   cancel-in-progress: true
@@ -31,12 +30,14 @@ jobs:
         run: npm install
 
       - name: Fix Permissions
-        # This solves the 'vite: Permission denied' error
         run: chmod -R +x node_modules/.bin
 
       - name: Build
-        # This will now have permission to run
         run: npm run build
+
+      - name: Debug - List Files
+        # This will show us in the logs if index.html was built correctly
+        run: ls -R dist
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
