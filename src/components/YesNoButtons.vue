@@ -85,13 +85,15 @@ const floatingGiggleBoxes = ref([])
 let giggleBoxIdCounter = 0
 
 // Giggle GIF tracking - ensures no repeats until all are used
+const base = import.meta.env.BASE_URL 
+
 const availableGiggleGifs = [
-  '/gifs/gif.gif',
-  '/gifs/Lmao%20Lol%20GIF%20by%20STRAPPED!.gif',
-  '/gifs/Mike%20Myers%20Evil%20Laugh%20GIF.gif',
-  '/gifs/Nick%20Offerman%20Laughing%20GIF.gif',
-  '/gifs/Ryan%20Gosling%20Reaction%20GIF.gif',
-  '/gifs/Season%203%20Nbc%20GIF%20by%20The%20Office.gif'
+  `${base}gifs/gif.gif`,
+  `${base}gifs/Lmao%20Lol%20GIF%20by%20STRAPPED!.gif`,
+  `${base}gifs/Mike%20Myers%20Evil%20Laugh%20GIF.gif`,
+  `${base}gifs/Nick%20Offerman%20Laughing%20GIF.gif`,
+  `${base}gifs/Ryan%20Gosling%20Reaction%20GIF.gif`,
+  `${base}gifs/Season%203%20Nbc%20GIF%20by%20The%20Office.gif`
 ]
 const usedGifIndices = ref(new Set())
 
