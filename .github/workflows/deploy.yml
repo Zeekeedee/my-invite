@@ -1,4 +1,4 @@
-name: Deploy Vue
+name: Deploy Vue Stable
 
 on:
   push:
@@ -34,10 +34,6 @@ jobs:
 
       - name: Build
         run: npm run build
-
-      - name: Debug - List Files
-        # This will show us in the logs if index.html was built correctly
-        run: ls -R dist
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
